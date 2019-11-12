@@ -1,0 +1,67 @@
+{% extends  "base.html"%}
+{% block content %}
+{%macro render_field(field)%}
+ <td> {{ field.label }} </td>
+ <dd> {{ field(**kwargs)|safe }}</dd>
+{% endmacro %}
+<form method="POST">
+	
+<input type="text" name="cientific_name" placeholder="cientific_name">
+
+<input type="text" name="ph" placeholder="ph">
+<br> 
+<input type="text" name="temperature" placeholder="temperature">
+
+<input type="text" name="large_of_fish_in_centimeters" placeholder="large_of_fish_in_centimeters">
+<br> 
+<input type="text" name="needed_liters" placeholder="needed_liters">
+
+<input type="text" name="fish_diet" placeholder="fish_diet">
+<br> 
+<input type="text" name="fish_conduct" placeholder="fish_conduct">
+
+<input type="text" name="location" placeholder="location">
+
+<br> 
+<input type="text" name="common_name" placeholder="common_name">
+<button type="summit ">save </button>
+
+
+<table  border="1">
+	<thead>	
+	<tr>
+
+		<td>cientific_name</td>
+		<td>ph</td>
+		<td>temperature</td>
+		<td>large_of_fish_in_centimeters</td>
+		<td>needed_liters</td>
+		<td>fish_diet</td>
+		<td>fish_conduct</td>
+		<td>location</td>
+		<td>common_name</td>
+
+	</tr>
+</thead>
+<tbody>
+	{% for fish in fishes %}
+	<tr>
+		<td> {{ fish.0 }}</td>
+
+		<td> {{ fish.1 }}</td>
+		<td> {{ fish.2 }}</td>
+		<td> {{ fish.3 }}</td>
+		<td> {{ fish.4 }}</td>
+		<td> {{ fish.5 }}</td>
+		<td> {{ fish.6 }}</td>
+		<td> {{ fish.7 }}</td>
+		<td> {{ fish.8 }}</td>
+		<td> {{ fish.9 }}</td>
+
+
+	</tr>
+	{% endfor  %}
+	</tbody>
+</table>
+</form>
+{% endblock %}

@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<head>
+<html lang="en">
+<meta charset="UTF-8"> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<title>Word Wide Web of Fish</title>
+</head>
+<body>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/barra_superior.css')}}">
+	<center >
+		<div id="header">
+			
+		<ul class="bar">
+			<li><a href="/">main menu</a></li>
+			<li> <a href="">Proyects already done</a> 
+				<ul>
+					<li><a href="https://github.com/jero98772/calcupH_js">calcuPH</a></li>
+					<li><a href="https://github.com/jero98772/PHpythoncalcultator"> PHpythoncalcultator</a></li>
+					<li><a href="https://github.com/jero98772/dibujo_acuario_p5js">dibujo_acuario_p5js</a></li>
+			
+				</ul>
+			</li>
+	
+		<li><a href="">Proyects  for test already done</a>
+				<ul>
+					<li><a href="calcupH.html">calcuPH</a> </li>
+					<li><a href="dibuja_acuario.html">dibujo_acuario_p5js</a></li>
+					<li><a href="enter-a-fish.html">enter a fish</a></li>
+					</ul>
+				</li>
+			</ul>
+
+		</div>
+	</center>
+	<br>
+	<br>
+	<br>
+	<br>
+{% block content %}
+
+{% endblock %}
+
+</body>
+</html>
