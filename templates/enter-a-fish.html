@@ -30,7 +30,7 @@
 <table  border="1">
 	<thead>	
 	<tr>
-
+		<td>id</td>
 		<td>cientific_name</td>
 		<td>ph</td>
 		<td>temperature</td>
@@ -40,14 +40,15 @@
 		<td>fish_conduct</td>
 		<td>location</td>
 		<td>common_name</td>
+		<td>delet</td>
+		<!--td>edit</td-->
 
 	</tr>
 </thead>
 <tbody>
-	{% for fish in fishes %}
+	{% for fish in fishs %}
 	<tr>
 		<td> {{ fish.0 }}</td>
-
 		<td> {{ fish.1 }}</td>
 		<td> {{ fish.2 }}</td>
 		<td> {{ fish.3 }}</td>
@@ -57,7 +58,8 @@
 		<td> {{ fish.7 }}</td>
 		<td> {{ fish.8 }}</td>
 		<td> {{ fish.9 }}</td>
-
+		<td><a href="enter-a-fish/delete/{{ fish.0 }}">delete</a></td>
+		<!--td><a href="enter-a-fish/update/{{ fish.0 }}">edit</a></td-->
 
 	</tr>
 	{% endfor  %}

@@ -12,7 +12,7 @@ let litros ,acuarium;
 let angle;
 let y,x;
 let half_torus,torusVOL,radius1,radius2,fishtank_classic,cilindro,perimetro;
-let minisegundos=10000;
+let minisegundos=1000;
 
 function calcular_litros() {
 canvas=createCanvas(350, 350, WEBGL);

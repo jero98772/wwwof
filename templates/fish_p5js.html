@@ -1,0 +1,14 @@
+{% extends  "base.html"%}
+
+{% block content%}
+<meta charset="utf-8">
+<title>p5.js example</title>
+<style> body {padding: 0; margin: 0;} </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="text/javascript" src="{{ url_for('static', filename='js/wwwof_calcular_litros.js')}}"></script>
+<script src="{{ url_for('static', filename='js/libraris/p5/p5.min.js')}}"></script>
+<script src="{{ url_for('static', filename='js/libraris/p5/addons/p5.dom.min.js')}}"></script>
+<script src="{{ url_for('static', filename='js/libraris/p5/addons/p5.sound.min.js')}}"></script>
+<script src="{{ url_for('static', filename='js/sketch_fish.js')}}"></script>
+<meta charset="UTF-8"> 
+{% endblock %}
