@@ -5,6 +5,6 @@
 
         oFReader.onload = function (oFREvent) {
             document.getElementById("image").src = oFREvent.target.result;
-            need_time=10**10*2
+            
         };
     };

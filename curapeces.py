@@ -16,7 +16,7 @@ from tensorflow.python.keras.layers import  Convolution2D, MaxPooling2D
 from keras.preprocessing.image import load_img, img_to_array
 from keras.models import load_model
 from tensorflow.python.keras import backend as K
-#from numba import cuda
+from numba import cuda ,jit
 #import numba
 from werkzeug import secure_filename
 
@@ -26,18 +26,18 @@ from codes_python import ordenador
 
 
 #varibles globales
-#@jit(target ="cuda")
+
 #def curapeces():
 class curapeces():
     K.clear_session()
     directorio="./static/img/datos_limpios"
 
-    pruebas = 1
-    alturadelaimagen =150
-    longituddelaimagen= 150
-    numerodeimagenesamandar=1
-    pasos=700#numero de veces que se va aprosesar la informacion
-    validacon=183
+    pruebas = 2
+    alturadelaimagen =500
+    longituddelaimagen= 500
+    numerodeimagenesamandar=4 
+    pasos=1000#numero de veces que se va aprosesar la informacion
+    validacon=333
     filtroprimeravez= 32
     filtrosegundavez= 64
     filtroterceravez= 32
@@ -51,9 +51,9 @@ class curapeces():
     pulido=(2,2)
     numerodenfermedades=14# cambiar mientras encuenbtro imagenes y la sano cuenta como enfermedad
     #numerodenfermedades=2
-    lr = 0.00004
+    lr = 0.0004
 
-
+    @jit()
     def image(self):
         self.entrenamiento_datagen = ImageDataGenerator(
             rescale=1. / 255,
@@ -74,6 +74,7 @@ class curapeces():
             target_size=(self.alturadelaimagen, self.longituddelaimagen),
             batch_size=self.numerodeimagenesamandar,
             class_mode='categorical')
+    @jit()
     def nn(self):
     
         nn = Sequential()
@@ -82,22 +83,22 @@ class curapeces():
 
         nn.add(Convolution2D(self.filtrosegundavez, self.filtrodos, padding ="same"))
         nn.add(MaxPooling2D(pool_size=self.pulido))
-
-        # nn.add(Convolution2D(self.filtroterceravez, self.filtrotres, padding ="same"))
-        # nn.add(MaxPooling2D(pool_size=self.pulido))
-        #
-        # nn.add(Convolution2D(self.filtrocurtavez, self.filtrocutro, padding ="same"))
-        # nn.add(MaxPooling2D(pool_size=self.pulido))
-        #
-        # nn.add(Convolution2D(filtroquintavez, filtroquinto, padding ="same"))
-        # nn.add(MaxPooling2D(pool_size=pulido))
-
+        
+        #nn.add(Convolution2D(self.filtroprimeravez, self.filtrouno, padding ="same"))
+        nn.add(MaxPooling2D(pool_size=self.pulido))
+        """
+        nn.add(Convolution2D(self.filtroprimeravez, self.filtrouno, padding ="same"))
+        nn.add(MaxPooling2D(pool_size=self.pulido))
+        nn.add(Convolution2D(self.filtrosegundavez, self.filtrodos, padding ="same"))
+        nn.add(MaxPooling2D(pool_size=self.pulido))
+        """
+        
         nn.add(Flatten())
         nn.add(Dense(512, activation='relu'))
-        nn.add(Dropout(0.5))
+        nn.add(Dropout(0.2))
         nn.add(Dense(self.numerodenfermedades, activation='softmax'))
-        nn.compile(optimizer='sgd', loss='mse')
-        #cnn.compile(loss='categorical_crossentropy',optimizer=optimizers.Adam(lr=lr),metrics=['accuracy'])
+        #nn.compile(optimizer='sgd', loss='mse')
+        nn.compile(loss='categorical_crossentropy',optimizer=optimizers.Adam(lr=self.lr),metrics=['accuracy'])
 
 
 
@@ -106,6 +107,7 @@ class curapeces():
         #cnn.save('./modelo_lab_experimental/modelo_pezenfermo.h5')
         #cnn.save_weights('./modelo_lab_experimental/pesospezenfermo.h5')
         return nn
+    @jit()
     def save_nn(self):
         self.nn=curapeces.nn()
         self.target_dir = ordenador.archivo_existe.archivo_existe()
@@ -124,7 +126,8 @@ class predict():
     modelfolder="./codes_python/modelos_de_inteligencia_artificial_variedad/curapeces"+str(numfolders)+"__models_curapeces"
     model=modelfolder+"/model.h5"
     weights=modelfolder+"/weights.h5"
-    longitud, altura = 150, 150
+    print(modelfolder)
+    longitud, altura = 500, 500
     def display_image(self):
         #cv2.imshow ('ventana1',self.imagenpez)
         #cv2.waitKey(0)
@@ -152,7 +155,7 @@ class predict():
       #x3 = np.expand_dims(x3, axis=0)
       #array = cnn3.predict(x3)
       #result = array[0]
-      #self.answer = np.argmax(result)
+       #self.answer = np.argmax(result)
       elif self.answer ==1 :
         print("prediccion: branquias ")
       elif self.answer ==2 :
@@ -191,6 +194,6 @@ class predict():
 #curapeces.image()
 #curapeces.save_nn()
 #predict=predict()
-#predict.display_image()
+#predict.display_image()#
 #print(predict.predict())
 #print(predict.model)

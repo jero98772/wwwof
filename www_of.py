@@ -49,11 +49,15 @@ def shortcut():
 	POSTGRES = psycopg2.connect(database='',user='postgres',password='', host='localhost')
 	db=POSTGRES.cursor()
 	
-	db.execute(" SELECT * FROM put_your_table_here ;")
+	db.execute(" SELECT * FROM your table of your database ;")
 	return db
 @app.route("/")
 def index():
 	return render_template("index.html") 
+	
+@app.route("/infrome_de_ensallos.html")
+def infrome_de_ensallos():
+	return render_template("infrome_de_ensallos.html") 
 
 @app.route("/dibuja_acuario.html")
 def dibuja_acuario():
@@ -109,11 +113,11 @@ def enter_a_fish():
 		location=str(request.form["location"])
 		common_name=str(request.form["common_name"])
 		fish_conduct=str(request.form["fish_conduct"])
-		#db.execute('INSERT INTO put_your_table_here   VALUES ({},{},{},{}, {},{},{},{})'.format(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)) ,(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,location,common_name,fish_conduct))
-		db.execute("INSERT INTO put_your_table_here (cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s) ;" ,(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)))
-		#db.execute("INSERT INTO put_your_table_here  VALUES (cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name) " ,(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name))
-		#db.execute('INSERT INTO put_your_table_here  (cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name) VALUES ({},{},{},{}, {},{},{},{})'.format(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)) ,(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,location,common_name,fish_conduct))
-		#db.execute("INSERT INTO put_your_table_here (cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name,) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);" ,(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)))
+		#db.execute('INSERT INTO your table of your database   VALUES ({},{},{},{}, {},{},{},{})'.format(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)) ,(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,location,common_name,fish_conduct))
+		db.execute("INSERT INTO your table of your database (cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s) ;" ,(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)))
+		#db.execute("INSERT INTO your table of your database  VALUES (cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name) " ,(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name))
+		#db.execute('INSERT INTO your table of your database  (cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name) VALUES ({},{},{},{}, {},{},{},{})'.format(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)) ,(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,location,common_name,fish_conduct))
+		#db.execute("INSERT INTO your table of your database (cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name,) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);" ,(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)))
 
 		db.connection.commit()
 		flash('you edit that')
@@ -122,7 +126,7 @@ def enter_a_fish():
 @app.route("/enter-a-fish/delete/<string:id>", methods=['GET','POST'])
 def delete(id):
 	db=shortcut()
-	db.execute('DELETE FROM put_your_table_here WHERE id = {0}'.format(id))
+	db.execute('DELETE FROM your table of your database WHERE id = {0}'.format(id))
 	db.connection.commit()
 	flash('you delete that')
 	return redirect("/enter-a-fish.html")
@@ -156,7 +160,7 @@ def chose_predeiction(diases):
 	elif diases == 13:
 		sickness="prediccion: es un pez sano"
 	return sickness
-	
+		
 	
 @app.route("/curapeces.html" , methods=['GET','POST'])
 def curapeces():
@@ -194,7 +198,7 @@ def curapeces():
 		if not predict.pez=="":
 			prediccion"""
 		
-	return render_template('/curapeces.html',prediccion=sickness)
+	return render_template('/curapeces.html',prediccion=sickness,file=file)
 
 
 """@app.route("/enter-a-fish/update/<id>", methods=['GET','POST'])
@@ -210,15 +214,15 @@ def update(id):
 		common_name=str(request.form["common_name"])
 		fish_conduct=str(request.form["fish_conduct"])
 		db=shortcut()
-		db.execute('UPDATE  put_your_table_here SET cientific_name=%s,ph=%s,temperature=%s,needed_liters=%s,large_of_fish_in_centimeters=%s,fish_diet=%s,fish_conduct=%s,location =%s,common_name=%s  WHERE id = %s  ',(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name),id))
-		#db.execute('UPDATE  put_your_table_here SET(cientific_name=cientific_name,ph=ph,temperature=temperature,needed_liters=needed_liters,large_of_fish_in_centimeters=large_of_fish_in_centimeters,fish_diet=fish_diet,fish_conduct=fish_conduct,location =location,common_name=common_name VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s) WHERE id = {0}'.format(id),(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name),id))
+		db.execute('UPDATE  your table of your database SET cientific_name=%s,ph=%s,temperature=%s,needed_liters=%s,large_of_fish_in_centimeters=%s,fish_diet=%s,fish_conduct=%s,location =%s,common_name=%s  WHERE id = %s  ',(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name),id))
+		#db.execute('UPDATE  your table of your database SET(cientific_name=cientific_name,ph=ph,temperature=temperature,needed_liters=needed_liters,large_of_fish_in_centimeters=large_of_fish_in_centimeters,fish_diet=fish_diet,fish_conduct=fish_conduct,location =location,common_name=common_name VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s) WHERE id = {0}'.format(id),(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name),id))
 		db.connection.commit()
 		flash('you edit that')
 		return redirect("/enter-a-fish.html")
 @app.route('/enter-a-fish/edit/<id>', methods = ['POST', 'GET'])
 def edit(id):
     db = shortcut()
-    db.execute('SELECT * FROM put_your_table_here WHERE id = {0}'.format(id))
+    db.execute('SELECT * FROM your table of your database WHERE id = {0}'.format(id))
     data = db.fetchall()
     db.close()
     print(data[0])

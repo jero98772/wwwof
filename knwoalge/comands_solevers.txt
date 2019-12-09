@@ -5,3 +5,5 @@ run curapeces with uncoment this lines
 #curapeces=curapeces()
 #curapeces.image()
 #curapeces.save_nn()
+esta en 2 idimoas revueltos por que lugeo va ahaber un baranch español y otro ingles
+in the modesl of AI you need 3 for not show a error 
