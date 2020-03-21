@@ -1,4 +1,4 @@
-systemctl start postgresql.service  for "solove port" and start posgres 
+systemctl start postgresql.service  for "solove service" and start posgres 
  SELECT * FROM type_of_fish_type_of_fish ; for see in db (data base)
 run curapeces with uncoment this lines
 

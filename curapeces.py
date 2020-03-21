@@ -1,9 +1,6 @@
 import numpy as np
 import tensorflow as tf
 import cv2
-import sys
-import zipfile
-import tarfile
 import os
 #import pycuda.driver as cuda
 #import pycuda.autoinit
@@ -16,9 +13,8 @@ from tensorflow.python.keras.layers import  Convolution2D, MaxPooling2D
 from keras.preprocessing.image import load_img, img_to_array
 from keras.models import load_model
 from tensorflow.python.keras import backend as K
-from numba import cuda ,jit
+#from numba import cuda ,jit
 #import numba
-from werkzeug import secure_filename
 
 from codes_python import ordenador
 
@@ -53,7 +49,7 @@ class curapeces():
     #numerodenfermedades=2
     lr = 0.0004
 
-    @jit()
+    #@jit()
     def image(self):
         self.entrenamiento_datagen = ImageDataGenerator(
             rescale=1. / 255,
@@ -74,7 +70,7 @@ class curapeces():
             target_size=(self.alturadelaimagen, self.longituddelaimagen),
             batch_size=self.numerodeimagenesamandar,
             class_mode='categorical')
-    @jit()
+    #@jit()
     def nn(self):
     
         nn = Sequential()
@@ -107,7 +103,7 @@ class curapeces():
         #cnn.save('./modelo_lab_experimental/modelo_pezenfermo.h5')
         #cnn.save_weights('./modelo_lab_experimental/pesospezenfermo.h5')
         return nn
-    @jit()
+    #@jit()
     def save_nn(self):
         self.nn=curapeces.nn()
         self.target_dir = ordenador.archivo_existe.archivo_existe()

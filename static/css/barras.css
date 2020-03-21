@@ -38,7 +38,7 @@ ul, ol {
 .bar li ul {
 	display:none;
 	position:absolute;
-	min-width:140px;
+	min-width:180px;
 }
 
 .bar li:hover > ul {
@@ -50,6 +50,8 @@ ul, ol {
 }
 
 .bar li ul li ul {
-	right:-140px;
+	right:-180px;
+
 	top:0px;
 }
+/* i dont wait this work how i like */
