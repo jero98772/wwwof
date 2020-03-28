@@ -1,4 +1,5 @@
 import numpy as np
+import json
 class wwwof():
 	def __init__(self):
 		pass
@@ -9,6 +10,7 @@ class wwwof():
 		self.matrix = np.random.RandomState(100).uniform(self.min_,self.max_,self.size)
 		self.matrix2 = np.random.RandomState(100).uniform(self.min_,self.max_,self.size)
 		return self.matrix * self.matrix2
+#class jsonfish():
 
 
 

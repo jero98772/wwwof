@@ -1,14 +1,17 @@
+
 import subprocess
 subprocess.run("systemctl start postgresql.service", shell =True)
 from flask import Flask, render_template, request, flash, redirect 
 from flask_sqlalchemy import SQLAlchemy
 #from wtforms import  BooleanField, StringField, validators ,IntegerField
 import psycopg2, psycopg2.extras
+from psycopg2.extensions import AsIs
 #from flask_sqlalchemy import SQLAlchemy
 import time
 import numpy as np
 import os
 import urllib.request
+import cv2
 #from werkzeug.utils import secure_filename
 
 from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
@@ -22,8 +25,9 @@ from tensorflow.python.keras import backend as K
 from codes_python import ordenador
 #from flask_dropzone import Dropzone
 from codes_python import wwwof 
-
+import tempfile
 #==================================================================================================== librararis ====================================================================================================#
+
 app_root=os.path.dirname(os.path.abspath(__file__))
 app=Flask(__name__)
 app.secret_key = "mysecretkey"
@@ -31,27 +35,21 @@ app.secret_key = "mysecretkey"
 POSTGRES = {
     'user': 'postgres',
     'pw': '98772',
-    'db': 'your db',
+    'db': 'wwwofish',
     'host': 'localhost',
     'port': '5000',
 }
 
 app.config['SQLAlchemy_DATABASE_URI'] =  POSTGRES
 db=SQLAlchemy(app)
-cientific_name = db.Column(db.String(100))
-ph = db.Column(db.Integer, primary_key = True)
-temperature = db.Column(db.Integer, primary_key = True)
-needed_liters= db.Column(db.Integer, unique=True)
-large_of_fish_in_centimeters= db.Column(db.Integer, unique=True)
-fish_diet = db.Column(db.String(20), unique=True)
-fish_conduct = db.Column(db.String(20))
-common_name = db.Column(db.String(50))
+
 def shortcut():
-	POSTGRES = psycopg2.connect(database='your db',user='postgres',password='98772', host='localhost')
+	POSTGRES = psycopg2.connect(database='wwwofish',user='postgres',password='98772', host='localhost')
 	db=POSTGRES.cursor()
 	
-	db.execute(" SELECT * FROM __your_table__;")
+	db.execute(" SELECT * FROM wwwoftable4;")
 	return db
+
 #==================================================================================================== postgres shortcuts ====================================================================================================#
 
 #replace for other files and oop or funtional pardig
@@ -112,48 +110,197 @@ def criptoforyou():
 
 #================================================== other ==================================================#
 #==================================================================================================== liltle proyects ====================================================================================================#
-
-
-
-
-
 #boton a sub pagina para omitir el error de usuario pa que pueda medirlo cuando quiera
 
-@app.route("/enter-a-fish.html", methods=['GET','POST'])
-def enter_a_fish():
-	db=shortcut()
+
+@app.route("/data_basecsv.html", methods=['GET','POST'])
+def data_basecsv():
+	imgepath = []
+	db = shortcut()
 	rows = db.fetchall() 
-	print(rows)
-
-
-
+	imgdir = "./static/img/saved_db_img/"
 	if request.method == 'POST':
-		cientific_name=str(request.form["cientific_name"])
-		ph=int(request.form["ph"])
-		temperature=int(request.form["temperature"])
-		needed_liters=int(request.form["needed_liters"])
-		large_of_fish_in_centimeters=int(request.form["large_of_fish_in_centimeters"])
+#=================== name STRINGS ===================#
+		scientific_name = str(request.form["scientific_name"])
+		common_name = str(request.form["common_name"])
+#=================== FLOATS of  environment ===================#
+		minph = float(request.form["minph"]) 
+		maxph = float(request.form["maxph"])
+
+		mingh = float(request.form["mingh"]) 
+		maxgh = float(request.form["maxgh"])
+
+		mintemperature = float(request.form["mintemperature"])
+		maxtemperature = float(request.form["maxtemperature"])
+
+#=================== FLOATS of  fish ===================#
+
+		weight = float(request.form["weight"])
+		large_of_fish_in_centimeters = float(request.form["large_of_fish_in_centimeters"])
+		
+#=================== FLOATS for  fish ===================#
+
+		recommended_filtering = needed_liters*5
+		recommended_filtering = float(request.form["recommended_filtering"])
+
+#=================== STRINGS for  fish ===================#
+
+		eats = str(request.form["eats"])
+		can_eat = str(request.form["can_eat"])
+		
+		reproduction = str(request.form["reproduction"])
+		kill = str(request.form["kill"])
+
+		
+		breathing = str(request.form["breathing"])
+		print("\n"*3,breathing)
+		if breathing == "fresh water and Anabantoidei":
+			water = "fresh water"
+			print(water)
+		if breathing == "fresh water":
+			water = "fresh water"
+			print(water)
+		if breathing == "breathing in the sea":
+			water = "salt water"
+			print(water)
+		mouth = str(request.form["mouth"])
+
+#=================== STRINGS for  Location ===================#
+
+		latitude = str(request.form["latitude"])
+		longitude = str(request.form["longitude"])
+
+		country = str(request.form.get("country"))
+		state = str(request.form.get("state"))
+
+		city = str(request.form.get("city"))
+		waterenv = str(request.form.get("waterenv"))
+
+#=================== STRINGS for  fish behavior ===================#
+		
+		temperament = str(request.form["temperament"])
+		behavior = str(request.form["behavior"])
+
+		swimming_zone = str(request.form["swimming_zone"])
+		vel = str(request.form["vel"])
+
+		light = str(request.form["light"])
+		gravel = str(request.form["gravel"])
+
+#=================== STRINGS for  fish ecosistem ===================#
+
+
+		habitats = str(request.form["habitats"])
+		habits = str(request.form["habits"])
+
+		structural = str(request.form["structuralshape"])
+		ornaments = str(request.form["ornaments"])
+
+		ecosistem = str(request.form["ecosistem"])
+
+		withpalnts = str(request.form["withpalnts"])
+		if withpalnts =="'yes'":
+			withpalnts = "can live with aquatic plants"
+		elif withpalnts =="'no'":
+			withpalnts = "cant live with aquatic plants"
+		forms_surroundings = str(request.form.get("forms_surroundings"))
+
+#=================== STRINGS for  GENERAL INFORMATION  ===================#
+
+		photo = request.files["photo"]
+		description = str(request.form["description"])
+
+#=================== DB READ PHOTO   ===================#
+
+		#print("\n"*2,photo ,"\n"*2)
+
+		#print("\n"*2,photo ,"\n"*2)
+		photoname1 = str(photo).replace("<FileStorage: '","")
+		photoname1 = str(photoname1).replace("' ('image/jpeg')>","")
+		photoname1 = str(photoname1).replace("' ('image/png')>","")
+		photoname1 = str(photoname1).replace("' ('image/jpg')>","")
+		print("\n"*2,photoname1 ,"\n"*2)
+		photo.save(imgdir+photoname1)
+		photo = photoname1
+		photoname2 = str(len(os.listdir(imgdir)))
+		os.rename(imgdir+photoname1,imgdir+photoname2)
+		counter = 0
+		while counter <  len(os.listdir(imgdir)):
+			imgepath.append(os.path.join(imgdir+str(counter)))
+			print("\n"*3,counter,"\n",imgepath)
+			counter +=1
+		#photoimg = cv2.imread(photo)
+		#cv2.imwrite(imgdir+photoname,photoimg)
+
+
+#=================== put in db ===================#
+		waterforce = recommended_filtering
+
+		fishdata = [scientific_name ,common_name ,minph  ,maxph  ,mingh  ,maxgh  ,mintemperature ,maxtemperature  ,weight  ,large_of_fish_in_centimeters ,needed_liters  ,recommended_filtering  ,eats   ,can_eat  ,reproduction ,kill ,breathing ,mouth ,latitude  ,longitude  , country  , state   ,city      ,waterenv  ,temperament ,behavior ,swimming_zone  ,vel , light  ,gravel ,habitats, habits   ,structural  , ornaments ,waterforce , ecosistem ,withpalnts ,forms_surroundings, photo ,description , water  ]
+
+		fishdatastr = ["scientific_name" ,"common_name" ,"minph"  ,"maxph"  ,"mingh"  ,"maxgh"  ,"mintemperature" ,"maxtemperature"  ,"weight"  ,"large_of_fish_in_centimeters" ,"needed_liters"  ,"recommended_filtering  ","eats"   ,"can_eat"  ,"reproduction" ,"kill ","breathing" ,"mouth ","latitude  ","longitude  ", "country"  , "state"   ,"city      ","waterenv  ","temperament ","behavior ","swimming_zone"  ,"vel ", "light  ","gravel ","habitats", "habits"   ,"structural  ", "ornaments ","waterforce" , "ecosistem" ,"withpalnts ","forms_surroundings ","photo" ,"description ", "water " ]
+		strfishatributes = ""
+		count = 0
+		for i in fishdatastr:
+			if len(fishdatastr)-1 == count:
+				strfishatributes += i
+			else:
+				strfishatributes += i +","
+			count +=1
+
+		#print(strfishatributes)
+
+		db.connection.cursor()
+		db.execute(" INSERT INTO wwwoftable4 ( {} ) VALUES {};".format(strfishatributes,tuple(fishdata)))
+
+		#db.execute(" INSERT INTO wwwoftable4(scientific_name ,common_name ,minph  ,maxph  ,mingh  ,maxgh  ,mintemperature ,maxtemperature  ,weight  ,large_of_fish_in_centimeters ,needed_liters  ,recommended_filtering  ,eats   ,can_eat  ,reproduction ,kill ,breathing ,mouth ,latitude  ,longitude  , country  , state   ,city      ,waterenv  ,temperament ,behavior ,swimming_zone  ,vel , light  ,gravel ,habitats, habits   ,structural  , ornaments ,waterforce , ecosistem ,withpalnts ,forms_surroundings ,photo ,description , water  ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s );",(scientific_name ,common_name ,minph  ,maxph  ,mingh  ,maxgh  ,mintemperature ,maxtemperature  ,weight  ,large_of_fish_in_centimeters ,needed_liters  ,recommended_filtering  ,eats   ,can_eat  ,reproduction ,kill ,breathing ,mouth ,latitude  ,longitude  , country  , state   ,city      ,waterenv  ,temperament ,behavior ,swimming_zone  ,vel , light  ,gravel ,habitats , habits   ,structural  , ornaments ,waterforce , ecosistem ,withpalnts ,forms_surroundings ,photo ,description , water ))
+
+
+		db.connection.commit()
+		#flash('you edit that')
+		print(imgepath,2*"\n")
+	return render_template("data_basecsv.html", form = db, fishes=rows ,imgs =imgepath) 
+@app.route("/data_basecsv/delete/<string:id>", methods = ['GET','POST'])
+def delete(id):
+	db=shortcut()
+	db.execute('DELETE FROM wwwoftable4 WHERE id = {0}'.format(id))
+	db.connection.commit()
+	flash('you delete that')
+	return redirect("/data_basecsv.html")
+
+
+
+
+@app.route('/data_basecsv/actualisar/<string:id>', methods = ['GET','POST'])
+def update_fish(id):
+	db=shortcut()
+	if request.method == 'POST':
+		scientific_name=str(request.form["scientific_name"])
+		ph=float(request.form["ph"])
+		temperature=float(request.form["temperature"])
+		needed_liters=float(request.form["needed_liters"])
+		large_of_fish_in_centimeters=float(request.form["large_of_fish_in_centimeters"])
 		fish_diet=str(request.form["fish_diet"])
 		location=str(request.form["location"])
 		common_name=str(request.form["common_name"])
 		fish_conduct=str(request.form["fish_conduct"])
-		#db.execute('INSERT INTO __your_table__  VALUES ({},{},{},{}, {},{},{},{})'.format(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)) ,(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,location,common_name,fish_conduct))
-		db.execute("INSERT INTO __your_table__(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s) ;" ,(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)))
-		#db.execute("INSERT INTO __your_table__ VALUES (cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name) " ,(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name))
-		#db.execute('INSERT INTO __your_table__ (cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name) VALUES ({},{},{},{}, {},{},{},{})'.format(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)) ,(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,location,common_name,fish_conduct))
-		#db.execute("INSERT INTO __your_table__(cientific_name,ph,temperature,needed_liters,large_of_fish_in_centimeters,fish_diet,fish_conduct,location,common_name,) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);" ,(str(cientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name)))
-
+		db = db.connection.cursor()
+		db.execute("UPDATE wwwoftable4 SET scientific_name = %s,ph = %s, temperature = %s, large_of_fish_in_centimeters = %s,needed_liters = %s, fish_diet = %s , fish_conduct= %s,location = %s, common_name = %s WHERE id = %s ;", (str(scientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name),id))
+		flash(' Updated Successfully')
 		db.connection.commit()
-		flash('you edit that')
-		
-	return render_template("enter-a-fish.html", form = db, fishs=rows) 
-@app.route("/enter-a-fish/delete/<string:id>", methods=['GET','POST'])
-def delete(id):
+		return redirect('/data_basecsv.html')
+
+
+@app.route('/data_basecsv/editar/<string:id>', methods = ['POST', 'GET'])
+def get_fish(id):
 	db=shortcut()
-	db.execute('DELETE FROM __your_table__WHERE id = {0}'.format(id))
-	db.connection.commit()
-	flash('you delete that')
-	return redirect("/enter-a-fish.html")
+	db.connection.cursor()
+	db.execute('SELECT * FROM wwwoftable4 WHERE id = {}'.format(id))
+	rows = db.fetchall()
+	db.close()
+	return render_template('updatefish.html', fish_features = rows[0])
+
+#====================================================================================================  add fish db ====================================================================================================#
 def chose_predeiction(diases):
 	if diases == 0:
 		sickness="prediccion:  atcado o tumor y deformidad"
@@ -187,9 +334,6 @@ def chose_predeiction(diases):
 		
 	
 @app.route("/curapeces.html" , methods=['GET','POST'])
-
-#====================================================================================================  add fish db ====================================================================================================#
-
 def curapeces():
 	import curapeces
 	curapeces_class=curapeces.curapeces()
@@ -209,26 +353,20 @@ def curapeces():
 	if not predict.pez=="":
 		sickness
 	if request.method == 'POST':
-		#import curapeces
-		#curapeces_class=curapeces.curapeces()
+
 		file = request.files["file"]
+		print(file)
 		
-		predict.pez =file
+		predict.pez = file
 		print(predict.pez)
-		prediccion=predict.predict()
-		diases=prediccion
-		sickness=chose_predeiction(diases)
-		
-		"""
-		if not prediccion=="":
-			prediccion=""
-		if not predict.pez=="":
-			prediccion"""
+		prediccion = predict.predict()
+		diases = prediccion
+		sickness = chose_predeiction(diases)
+
 		
 	return render_template('/curapeces.html',prediccion=sickness)#,file=file)
 
 #==================================================================================================== curapeces ====================================================================================================#
-
 
 
 #====================================================================================================  web executing ====================================================================================================#

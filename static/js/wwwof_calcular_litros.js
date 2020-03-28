@@ -12,7 +12,7 @@ let litros ,acuarium;
 let angle;
 let y,x;
 let half_torus,torusVOL,radius1,radius2,fishtank_classic,cilindro,perimetro;
-let minisegundos=1000;
+let minisegundos=100;
 
 function calcular_litros() {
 canvas=createCanvas(350, 350, WEBGL);
@@ -47,7 +47,8 @@ if (selected=='prisma_rectangular') {
 	texto_lado1.innerHTML='largo cm'
 	texto_lado2.innerHTML='alto cm'
 	texto_lado3.innerHTML='ancho cm'
-	acuarium=setInterval(dibujarcubo(l,w,h,0,0),minisegundos);
+	//acuarium=setInterval(dibujarcubo(l,w,h,0,0),minisegundos);
+	dibujarcubo(l,w,h,0,0);
 }
 	
 if (selected=='cubica'){
@@ -60,7 +61,8 @@ if (selected=='cubica'){
 	texto_lado2.innerHTML='no es neseario'
 	texto_lado3.innerHTML='no es neseario'
 	parrafo.innerHTML=litros+" litros"
-	acuarium=setInterval(dibujarcubo(l),minisegundos);
+	//acuarium=setInterval(dibujarcubo(l),minisegundos);
+	dibujarcubo(l)
 }
 /*if (selected=='fishtank_classic'){
 	radius1=parseFloat(entrada_lado_1.value);

@@ -4,14 +4,14 @@ body {
 * {
 	margin:0px;
 	padding:0px;
-
 }
 
 
 #header {
 	margin:auto;
-	width:50%;
+	width:100%;
 	font-family:Arial, Helvetica, sans-serif;
+	font-size: 16.15px;
 
 }
 
@@ -27,7 +27,7 @@ ul, ol {
 	background-color:rgb(0,0,155,0.7);
 	color:white;
 	text-decoration:none;
-	padding:10px 12px;
+	padding:10px 13.9px;
 	display:block;
 }
 
