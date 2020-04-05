@@ -59,7 +59,7 @@ in the modesl of AI you need 3 for not show a error
   , water text );
 
 
-CREATE TABLE wwwoftable4(id serial ,scientific_name text,common_name text ,minph float ,maxph float ,mingh float ,maxgh float , mintemperature float, maxtemperature float ,weight float ,large_of_fish_in_centimeters float,needed_liters float ,recommended_filtering float ,eats text , can_eat text ,reproduction text,kill text,breathing text, mouth text,latitude text ,longitude text , country text , state text  ,city    text  ,waterenv text ,temperament text,behavior text,swimming_zone text ,vel text, light text ,gravel text,habitats text, habits text  ,structural text , ornaments text,waterforce float, ecosistem text,withpalnts text,forms_surroundings text,photo bytea,description text, water text );
+CREATE TABLE wwwoftable4(id serial ,scientific_name text,common_name text ,minph float ,maxph float ,mingh float ,maxgh float , mintemperature float, maxtemperature float ,weight float ,large_of_fish_in_centimeters float,needed_liters float ,recommended_filtering float ,eats text , can_eat text ,reproduction text,kill text,breathing text, mouth text,latitude text ,longitude text , country text , state text  ,city    text  ,waterenv text ,temperament text,behavior text,swimming_zone text ,vel text, light text ,gravel text,habitats text, habits text  ,structural text , ornaments text,waterforce float, ecosistem text,withpalnts text,forms_surroundings text,photo bytea,description text, water text ,photoname text);
   
 
 

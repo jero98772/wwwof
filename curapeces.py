@@ -115,13 +115,14 @@ class curapeces():
 #cuda.memcpy_htod(curapecs, curapecs())
 #curapeces()
 class predict():
-    pez=""
+    pez = ""
+    numfolders = 0
     #pez="./para_ensallar/"+input("chose a imge and put file extision ... png jpg\n")
     imagenpez = cv2.imread(pez, cv2.IMREAD_COLOR)
     numfolders=len(os.listdir("codes_python/modelos_de_inteligencia_artificial_variedad"))-1
-    modelfolder="./codes_python/modelos_de_inteligencia_artificial_variedad/curapeces"+str(numfolders)+"__models_curapeces"
-    model=modelfolder+"/model.h5"
-    weights=modelfolder+"/weights.h5"
+    modelfolder = "./codes_python/modelos_de_inteligencia_artificial_variedad/curapeces"+str(numfolders)+"__models_curapeces"
+    model = modelfolder+"/model.h5"
+    weights = modelfolder+"/weights.h5"
     print(modelfolder)
     longitud, altura = 500, 500
     def display_image(self):
