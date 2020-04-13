@@ -32,7 +32,7 @@ app.secret_key = "mysecretkey"
 
 POSTGRES = {
     'user': 'postgres',
-    'pw': '8_>370',
+    'pw': '8_>3700370',
     'db': 'wwwofish',
     'host': 'localhost',
     'port': '5000',
@@ -40,23 +40,33 @@ POSTGRES = {
 
 app.config['SQLAlchemy_DATABASE_URI'] =  POSTGRES
 db=SQLAlchemy(app)
-def selctimg(rows,imgdir):
+def p(*args):
+	for i in args:
+		print("\n"*2,i,"\n"*2)
+
+def selctimg(rows,imgdir,id):
 	img = ""
+
+	imgs =[]
 	count = 0
-	for elements in range(43):#number of items in db
+	col = 0
+	for elements in range(len(os.listdir(imgdir))):#number of items in db
 		for i in rows:
-			while count <  len(os.listdir(imgdir))+1 and  i == imgdir+str(count):
-				#print("\n"*3,i,count,"\n"*3)
-				img = os.path.join(imgdir+str(count))
+			while count <  len(os.listdir(imgdir)) and  i == imgdir+str(count):
+				img = os.path.join(imgdir+str(count)) 
 				#img = count
 				#img = str(imgdir+str(count))
-
-				break
-
+			if col == 42:
+				p(col)
+				photoname = i
+				p(photoname)
+			col +=1
+			p(i)
 		count +=1 
-	return [img ,count]
+		imgs.append(count)
+	return [img ,count,imgs,photoname]
 def shortcut():
-	POSTGRES = psycopg2.connect(database='wwwofish',user='postgres',password='8_>370', host='localhost')
+	POSTGRES = psycopg2.connect(database='wwwofish',user='postgres',password='8_>370073', host='localhost')
 	db=POSTGRES.cursor()
 	
 	db.execute(" SELECT * FROM wwwoftable4;")
@@ -125,9 +135,9 @@ def bechmarcksinglecore():
 def fish_p5js():
 	return render_template("fish_p5js.html") 
 
-@app.route("/criptoforyou.html")
+@app.route("/criptforall.html")
 def criptoforyou():
-	return render_template("criptoforyou.html") 
+	return render_template("criptforall.html") 
 
 
 #================================================== other ==================================================#
@@ -246,7 +256,7 @@ def data_basecsv():
 		photo.save(imgdir+photoname1)
 		photo = photoname1
 		photoname2 = str(len(os.listdir(imgdir)))
-		photoname = imgdir+photoname2
+		photoname = str(imgdir+photoname2)
 		photonameid = imgdir+photoname2 +scientific_name
 		os.rename(imgdir+photoname1,photoname)
 		counter = 0
@@ -263,7 +273,7 @@ def data_basecsv():
 
 		fishdata = [scientific_name ,common_name ,minph  ,maxph  ,mingh  ,maxgh  ,mintemperature ,maxtemperature  ,weight  ,large_of_fish_in_centimeters ,needed_liters  ,recommended_filtering  ,eats   ,can_eat  ,reproduction ,kill ,breathing ,mouth ,latitude  ,longitude  , country  , state   ,city      ,waterenv  ,temperament ,behavior ,swimming_zone  ,vel , light  ,gravel ,habitats, habits   ,structural  , ornaments ,waterforce , ecosistem ,withpalnts ,forms_surroundings, photo ,description , water  ,photoname ]
 
-		fishdatastr = ["scientific_name" ,"common_name" ,"minph"  ,"maxph"  ,"mingh"  ,"maxgh"  ,"mintemperature" ,"maxtemperature"  ,"weight"  ,"large_of_fish_in_centimeters" ,"needed_liters"  ,"recommended_filtering  ","eats"   ,"can_eat"  ,"reproduction" ,"kill ","breathing" ,"mouth ","latitude  ","longitude  ", "country"  , "state"   ,"city      ","waterenv  ","temperament ","behavior ","swimming_zone"  ,"vel ", "light  ","gravel ","habitats", "habits"   ,"structural  ", "ornaments ","waterforce" , "ecosistem" ,"withpalnts ","forms_surroundings ","photo" ,"description ", "water " ,"photoname",]
+		fishdatastr = ["scientific_name" ,"common_name" ,"minph"  ,"maxph"  ,"mingh"  ,"maxgh"  ,"mintemperature" ,"maxtemperature"  ,"weight"  ,"large_of_fish_in_centimeters" ,"needed_liters"  ,"recommended_filtering  ","eats"   ,"can_eat"  ,"reproduction" ,"kill ","breathing" ,"mouth ","latitude  ","longitude  ", "country"  , "state"   ,"city      ","waterenv  ","temperament ","behavior ","swimming_zone"  ,"vel ", "light  ","gravel ","habitats", "habits"   ,"structural  ", "ornaments ","waterforce" , "ecosistem" ,"withpalnts ","forms_surroundings ","photo" ,"description ", "water " ,"photoname"]
 		
 		strfishatributes = ""
 		count = 0
@@ -393,15 +403,53 @@ def update_fish(id):
 #=================== STRINGS for  GENERAL INFORMATION  ===================#
 
 		description = str(request.form["description"])
-		#photo = request.files["photo"]
+		photo = request.files["photo"]
+		#print(photo)
 
 #=================== DB READ PHOTO   ===================#
+		for i in range(len(os.listdir(imgdir))):
+			image  = selctimg(rows[0],imgdir,i)
+			name = image[1]
+			img = image[0]
+			namephoto = str(image[3])
+		#namephoto = "5"
+		photoname1 = str(photo).replace("<FileStorage: '","")
+		photoname1 = str(photoname1).replace("' ('image/jpeg')>","")
+		photoname1 = str(photoname1).replace("' ('image/png')>","")
+		photoname1 = str(photoname1).replace("' ('image/jpg')>","")
+		#print("\n"*2,photoname1 ,"\n"*2)
+		"""
+		dirphotoname1 = imgdir+photoname1
+		os.rename(dirphotoname1,photoname)
+		photo.save(dirphotoname1)
+		"""
+		aftersave = str(len(os.listdir(imgdir)))
+		dirphotoname1 = imgdir+photoname1
+		#p(imgdir+photoname1)
+		photo.save(imgdir+photoname1)#name
 
+		photoname2 = str(len(os.listdir(imgdir)))#+1
+		photoname = str(imgdir+photoname2)#dir+1
+		#photonameid = imgdir+photoname2 +scientific_name
+		p(namephoto)
+		print("save",str(imgdir+photoname1))
+		print("rename",str(imgdir+namephoto))
+		p(imgdir+photoname2)
+		p(str(imgdir+aftersave))
+		p(imgdir+photoname1)
+		
+		#os.remove(namephoto)
+		os.rename(imgdir+photoname1,namephoto)
+		#os.remove(imgdir+photoname1)
+		photo = photoname1 
+		photoname = namephoto
+		#photoimg = cv2.imread(photo)
+		#cv2.imwrite(imgdir+photoname,photoimg)
+
+#=================== DB READ PHOTO   ===================#
+		"""
 #take the previous image
-		print(photo)
-		image  = selctimg(rows[0],imgdir)
-		name = image[1]
-		img = image[0]
+
 		print("\n"*2,img ,"\n"*2,name)
 		#print("\n"*2,photo ,"\n"*2)
 		photoname1 = str(photo).replace("<FileStorage: '","")
@@ -416,17 +464,18 @@ def update_fish(id):
 		photoname = imgdir+photoname2
 		photonameid = imgdir+photoname2 +scientific_name
 		os.rename(imgdir+photoname1,photoname)
-
-
 		name = imgdir + name
 		os.rename(photoname,name)
+
+		"""
 #=================== put in db ===================#
 		waterforce = recommended_filtering
 
 		fishdata = [scientific_name ,common_name ,minph  ,maxph  ,mingh  ,maxgh  ,mintemperature ,maxtemperature  ,weight  ,large_of_fish_in_centimeters ,needed_liters  ,recommended_filtering  ,eats   ,can_eat  ,reproduction ,kill ,breathing ,mouth ,latitude  ,longitude  , country  , state   ,city      ,waterenv  ,temperament ,behavior ,swimming_zone  ,vel , light  ,gravel ,habitats, habits   ,structural  , ornaments ,waterforce , ecosistem ,withpalnts ,forms_surroundings, photo ,description , water  ,photoname ]
 
-		fishdatastr = ["scientific_name" ,"common_name" ,"minph"  ,"maxph"  ,"mingh"  ,"maxgh"  ,"mintemperature" ,"maxtemperature"  ,"weight"  ,"large_of_fish_in_centimeters" ,"needed_liters"  ,"recommended_filtering  ","eats"   ,"can_eat"  ,"reproduction" ,"kill ","breathing" ,"mouth ","latitude  ","longitude  ", "country"  , "state"   ,"city      ","waterenv  ","temperament ","behavior ","swimming_zone"  ,"vel ", "light  ","gravel ","habitats", "habits"   ,"structural  ", "ornaments ","waterforce" , "ecosistem" ,"withpalnts ","forms_surroundings ","photo" ,"description ", "water " ,"photoname",]
-		
+		fishdatastr = ["scientific_name" ,"common_name" ,"minph"  ,"maxph"  ,"mingh"  ,"maxgh"  ,"mintemperature" ,"maxtemperature"  ,"weight"  ,"large_of_fish_in_centimeters" ,"needed_liters"  ,"recommended_filtering  ","eats"   ,"can_eat"  ,"reproduction" ,"kill ","breathing" ,"mouth ","latitude  ","longitude  ", "country"  , "state"   ,"city      ","waterenv  ","temperament ","behavior ","swimming_zone"  ,"vel ", "light  ","gravel ","habitats", "habits"   ,"structural  ", "ornaments ","waterforce" , "ecosistem" ,"withpalnts ","forms_surroundings ","photo" ,"description ", "water " ,"photoname"]
+		db = db.connection.cursor()
+		"""		
 		strfishatributes = ""
 		count = 0
 		for i in fishdatastr:
@@ -435,18 +484,41 @@ def update_fish(id):
 			else:
 				strfishatributes += i +","
 			count +=1
-
-		db = db.connection.cursor()
-
+		
 		fishdatalist = []
-		for j in fishdata:
-			for i in fishdatastr:
-				if len(fishdatastr)-1 == count:
-					strfishatributes += str(i)+"={}".format(j)
-				else:
-					strfishatributes += str(i)+"%s".format(j)+","
-				count +=1
+		for i in fishdata:
+			fishdatalist.append(i)
+		for i in fishdatastr:
+			fishdatalist.append(i)
 		"""
+		fishupdatestr = ""
+		fishupdatelts = []
+		count = 0
+		#for in fishdata:
+		for i,j  in zip(fishdatastr,fishdata):
+			str(j).replace(",","")
+			if len(fishdatastr)-1 == count:
+				add = i+"= '{}'".format(str(j))
+				fishupdatestr += str(i)+" =' {}' ".format(str(j))
+				fishupdatelts.append(add)
+			else:
+				add = i+"= '{}'".format(str(j))
+				fishupdatestr += str(i)+" =' {}' ".format(str(j))+","
+				fishupdatelts.append(add)
+			count += 1
+		#fishupdatestr = fishupdatestr.title()
+		#p("UPDATE wwwoftable4 SET {} WHERE id = {} ".format(tuple(fishupdatelts), id))
+		#fishupdatelts=tuple(fishupdatelts)
+		"""
+		fishupdate = ""
+		count = 0
+		#for in fishdata:
+		for i,j  in zip(fishdatastr,fishdata):
+			if len(fishdatastr)-1 == count:
+				fishupdate.append(str(i)+"= {}".format(j))
+			else:
+				fishupdate.append(str(i)+"= {}".format(j))
+			count +=1
 		for i in fishdatastr:
 			for j in fishdata:
 				if len(fishdatalist)-1 == count:
@@ -456,9 +528,15 @@ def update_fish(id):
 					fishdatalist.append(i +",") 
 				count +=1 """
 		#db.execute("UPDATE wwwoftable4 SET scientific_name = %s,ph = %s, temperature = %s, large_of_fish_in_centimeters = %s,needed_liters = %s, fish_diet = %s , fish_conduct= %s,location = %s, common_name = %s WHERE id = %s ;", (str(scientific_name),ph,temperature,needed_liters,large_of_fish_in_centimeters,str(fish_diet),str(fish_conduct),str(location),str(common_name),id))
-
-		for indb in fishdatastr:
-			db.execute("UPDATE wwwoftable4 SET {} WHERE id = {} ;".format(indb, id))
+		#db.execute(" INSERT INTO wwwoftable4 ( {} ) VALUES {};".format(strfishatributes,tuple(fishdata)))
+		#db.execute("UPDATE wwwoftable4 SET %s WHERE id = %s ",(tuple(fishupdatelts), id))
+		#db.execute(f"UPDATE wwwoftable4 SET {fishupdatelts} WHERE id = {id} ")
+		update = "UPDATE wwwoftable4 SET {} WHERE id = {} ".format(fishupdatestr, id)
+		#update = str(update)
+		#update.replace(" [","")
+		#update.replace("] ","")
+		p(update)		
+		db.execute(update)
 		flash(' Updated Successfully')
 		db.connection.commit()
 
@@ -476,8 +554,10 @@ def get_fish(id):
 	db.connection.cursor()
 	db.execute('SELECT * FROM wwwoftable4 WHERE id = {}'.format(id))
 	rows = db.fetchall()
-	img = selctimg(rows[0],imgdir)
-	img = img[0]
+	img = selctimg(rows[0],imgdir,len(os.listdir(imgdir)))
+	name = str(img[1])
+	imgae = img[0]
+	imgs = img[2]
 	"""
 	for elements in range(43):#number of items in db
 		for i in rows[0]:
@@ -493,7 +573,7 @@ def get_fish(id):
 	"""
 
 	db.close()
-	return render_template('data_basecsv/updatefish.html', fish = rows[0],image = img)#, imgpath=imgchange)
+	return render_template('data_basecsv/updatefish.html', fish = rows[0],strcounter = name,test=imgs)#, imgpath=imgchange)
 
 #====================================================================================================  add fish db ====================================================================================================#
 def chose_predeiction(diases):
@@ -579,4 +659,4 @@ def curapeces():
 #====================================================================================================  web executing ====================================================================================================#
 
 if __name__=='__main__':
-	app.run(debug=True)
+	app.run(debug=True,host="0.0.0.0")

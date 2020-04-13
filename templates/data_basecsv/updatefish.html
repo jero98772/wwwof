@@ -2,7 +2,7 @@
 {% block content %}
 
 
-<form action="/data_basecsv/actualisar{{fish.0}}" method="POST">	
+<form action="/data_basecsv/actualisar{{fish.0}}" method="POST" enctype="multipart/form-data">	
 
 
 
@@ -228,7 +228,9 @@
 				<td><b>type of water</b> {{ fish.41 }}</td>
 
 				<td colspan="2" rowspan="4">
-					<img src="./.{{ image }}  " alt="{{ image }} " height="250" width="250" >
+					{%set imgpath = "./../static/img/saved_db_img/"+strcounter  %}			
+					<img src="./.{{ imgpath }}  " alt="{{ imgpath }} " height="250" width="250" >
+					
 				</td>
 
 
