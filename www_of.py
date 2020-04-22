@@ -32,7 +32,7 @@ app.secret_key = "mysecretkey"
 
 POSTGRES = {
     'user': 'postgres',
-    'pw': '8_>3700370',
+    'pw': '8_>370and98772',
     'db': 'wwwofish',
     'host': 'localhost',
     'port': '5000',
@@ -66,7 +66,7 @@ def selctimg(rows,imgdir,id):
 		imgs.append(count)
 	return [img ,count,imgs,photoname]
 def shortcut():
-	POSTGRES = psycopg2.connect(database='wwwofish',user='postgres',password='8_>370073', host='localhost')
+	POSTGRES = psycopg2.connect(database='wwwofish',user='postgres',password='8_>370and98772dontwork', host='localhost')
 	db=POSTGRES.cursor()
 	
 	db.execute(" SELECT * FROM wwwoftable4;")
@@ -79,6 +79,9 @@ def shortcut():
 @app.route("/")
 def index():
 	return render_template("index.html") 
+@app.route("/donacionbtc.html")
+def donacionbtc():
+	return render_template("essential/donacionbtc.html")
 @app.route("/planeacion.html")
 def planeacion():
 	return render_template("planeacion_y_informes/planeacion.html") 
