@@ -1,10 +1,12 @@
 import subprocess
-subprocess.run("systemctl start postgresql.service", shell =True)
 from flask import Flask, render_template, request, flash, redirect 
-from flask_sqlalchemy import SQLAlchemy
+try:
+	from flask_sqlalchemy import SQLAlchemy
 #from wtforms import  BooleanField, StringField, validators ,IntegerField
-import psycopg2, psycopg2.extras
-from psycopg2.extensions import AsIs
+	import psycopg2, psycopg2.extras
+	from psycopg2.extensions import AsIs
+except:	
+	subprocess.run("systemctl start postgresql.service", shell =True)
 #from flask_sqlalchemy import SQLAlchemy
 import time
 import numpy as np
@@ -32,7 +34,7 @@ app.secret_key = "mysecretkey"
 
 POSTGRES = {
     'user': 'postgres',
-    'pw': '8_>370and98772',
+    'pw': '8_>370',
     'db': 'wwwofish',
     'host': 'localhost',
     'port': '5000',
@@ -66,89 +68,97 @@ def selctimg(rows,imgdir,id):
 		imgs.append(count)
 	return [img ,count,imgs,photoname]
 def shortcut():
-	POSTGRES = psycopg2.connect(database='wwwofish',user='postgres',password='8_>370and98772dontwork', host='localhost')
+	POSTGRES = psycopg2.connect(database='wwwofish',user='postgres',password='8_>370', host='localhost')
 	db=POSTGRES.cursor()
 	
 	db.execute(" SELECT * FROM wwwoftable4;")
 	return db
-
+def chose_predeiction(diases):
+	if diases == 0:
+		sickness="prediccion:  atcado o tumor y deformidad"
+	elif diases ==1 :
+		sickness="prediccion: branquias "
+	elif diases ==2 :
+		sickness="prediccion: girodactilo "
+	elif diases == 3:
+		sickness="prediccion: gusano lernea "
+	elif diases ==4 :
+		sickness="prediccion: hidropecia "
+	elif diases == 5:
+		sickness="prediccion: hongos"
+	elif diases ==6 :
+		sickness="prediccion: huecos en la cabesa"
+	elif diases == 7 :
+		sickness="prediccion: ich "
+	elif diases ==8 :
+		sickness="prediccion: no es un pez"
+	elif diases == 9:
+		sickness="prediccion: ojo picho "
+	elif diases == 10:
+		sickness="parasito en la lengua"
+	elif diases == 11:
+		sickness="prediccion: podredumbre de aletas "
+	elif diases == 12:
+		sickness="prediccion: quemadura de bagre "
+	elif diases == 13:
+		sickness="prediccion: es un pez sano"
+	return sickness
+		
 #==================================================================================================== postgres shortcuts ====================================================================================================#
 
 #replace for other files and oop or funtional pardig
 #==================================================================================================== funtion in python ====================================================================================================#
-@app.route("/")
+
+webpage = "/www_of"
+@app.route(webpage+"/")
 def index():
-	return render_template("index.html") 
-@app.route("/donacionbtc.html")
+	return render_template("www_of/index.html") 
+@app.route(webpage+"/donacionbtc.html")
 def donacionbtc():
-	return render_template("essential/donacionbtc.html")
-@app.route("/planeacion.html")
+	return render_template("www_of/essential/donacionbtc.html")
+@app.route(webpage+"/planeacion.html")
 def planeacion():
-	return render_template("planeacion_y_informes/planeacion.html") 
+	return render_template("www_of/planeacion_y_informes/planeacion.html") 
 
-@app.route("/divePC.html")
+@app.route(webpage+"/divePC.html")
 def divePC():
-	return render_template("divePC.html") 
+	return render_template("www_of/divePC.html") 
 	
-@app.route("/informe_de_ensayos.html")
+@app.route(webpage+"/informe_de_ensayos.html")
 def informe_de_ensayos():
-	return render_template("planeacion_y_informes/informe_de_ensayos.html")
+	return render_template("www_of/planeacion_y_informes/informe_de_ensayos.html")
 
-@app.route("/tecnologias.html") 
+@app.route(webpage+"/tecnologias.html") 
 def tecnologias():
-	return render_template("planeacion_y_informes/tecnologiasmap.html")
+	return render_template("www_of/planeacion_y_informes/tecnologiasmap.html")
 
-@app.route("/valores.html") 
+@app.route(webpage+"/valores.html") 
 def valores():
-	return render_template("planeacion_y_informes/valores.html")
+	return render_template("www_of/planeacion_y_informes/valores.html")
 #================================================== documentate ==================================================#
 
-@app.route("/drawFISHTANK.html")
+@app.route(webpage+"/drawFISHTANK.html")
 def drawFISHTANK():
-	return render_template("drawFISHTANK/drawFISHTANK.html") 
+	return render_template("www_of/drawFISHTANK/drawFISHTANK.html") 
 
-@app.route("/calcupH.html")
+@app.route(webpage+"/calcupH.html")
 def calcuph():
-	return render_template("ph.html") 
+	return render_template("www_of/ph.html") 
 
 
-@app.route("/bechmarck.html")
-def bechmarck():
-	return render_template("bechmarck/bechmarck.html")
-
-@app.route("/bechmarck/bechmarckmulticore.html")
-def bechmarckmulticore():
-	start = time.time()
-	nm=8500
-	w = wwwof.wwwof()
-	result = w.matrix(-nm,nm,(nm,nm))
-	finish = time.time()
-	return render_template("bechmarck/bechmarckmulticore.html", start = start , finish = finish, reply = result)
-
-@app.route("/bechmarck/bechmarcksinglecore.html")
-def bechmarcksinglecore():
-	start = time.time()
-	result = 10**10**6 # not nesari import wwwof code for 1 line 
-	finish = time.time()
-	print(finish-start)
-	return render_template("bechmarck/bechmarcksinglecore.html", start = start , finish = finish, reply = result)
 #================================================== caculators ==================================================#
 
-@app.route("/fish_p5js.html")
+@app.route(webpage+"/fish_p5js.html")
 def fish_p5js():
-	return render_template("fish_p5js.html") 
-
-@app.route("/criptforall.html")
-def criptoforyou():
-	return render_template("criptforall.html") 
-
+	return render_template("www_of/fish_p5js.html") 
+	#little ornament for page
 
 #================================================== other ==================================================#
 #==================================================================================================== liltle proyects ====================================================================================================#
 #boton a sub pagina para omitir el error de usuario pa que pueda medirlo cuando quiera
 
 
-@app.route("/data_basecsv.html", methods=['GET','POST'])
+@app.route(webpage+"/data_basecsv.html", methods=['GET','POST'])
 def data_basecsv():
 	imgepath = []
 	db = shortcut()
@@ -298,8 +308,8 @@ def data_basecsv():
 		db.connection.commit()
 		#flash('you edit that')
 		#print(imgepath,2*"\n")
-	return render_template("data_basecsv/data_basecsv.html", form = db, fishes=rows ,imgs =imgepath) 
-@app.route("/data_basecsv/delete/<string:id>", methods = ['GET','POST'])
+	return render_template("www_of/data_basecsv/data_basecsv.html", form = db, fishes=rows ,imgs =imgepath) 
+@app.route(webpage+"/data_basecsv/delete/<string:id>", methods = ['GET','POST'])
 def delete(id):
 	db=shortcut()
 	db.execute('DELETE FROM wwwoftable4 WHERE id = {0}'.format(id))
@@ -310,7 +320,7 @@ def delete(id):
 
 
 
-@app.route('/data_basecsv/actualisar<string:id>', methods = ['GET','POST'])
+@app.route(webpage+'/data_basecsv/actualisar<string:id>', methods = ['GET','POST'])
 def update_fish(id):
 	db = shortcut()
 	imgdir = "./static/img/saved_db_img/"
@@ -546,7 +556,7 @@ def update_fish(id):
 		return redirect('/data_basecsv.html')
 
 
-@app.route('/data_basecsv/<string:id>', methods = ['POST', 'GET'])
+@app.route(webpage+'/data_basecsv/<string:id>', methods = ['POST', 'GET'])
 def get_fish(id):
 	#imgchange = ""
 	img = ""
@@ -576,42 +586,12 @@ def get_fish(id):
 	"""
 
 	db.close()
-	return render_template('data_basecsv/updatefish.html', fish = rows[0],strcounter = name,test=imgs)#, imgpath=imgchange)
+	return render_template('www_of/data_basecsv/updatefish.html', fish = rows[0],strcounter = name,test=imgs)#, imgpath=imgchange)
 
 #====================================================================================================  add fish db ====================================================================================================#
-def chose_predeiction(diases):
-	if diases == 0:
-		sickness="prediccion:  atcado o tumor y deformidad"
-	elif diases ==1 :
-		sickness="prediccion: branquias "
-	elif diases ==2 :
-		sickness="prediccion: girodactilo "
-	elif diases == 3:
-		sickness="prediccion: gusano lernea "
-	elif diases ==4 :
-		sickness="prediccion: hidropecia "
-	elif diases == 5:
-		sickness="prediccion: hongos"
-	elif diases ==6 :
-		sickness="prediccion: huecos en la cabesa"
-	elif diases == 7 :
-		sickness="prediccion: ich "
-	elif diases ==8 :
-		sickness="prediccion: no es un pez"
-	elif diases == 9:
-		sickness="prediccion: ojo picho "
-	elif diases == 10:
-		sickness="parasito en la lengua"
-	elif diases == 11:
-		sickness="prediccion: podredumbre de aletas "
-	elif diases == 12:
-		sickness="prediccion: quemadura de bagre "
-	elif diases == 13:
-		sickness="prediccion: es un pez sano"
-	return sickness
-		
+
 	
-@app.route("/curapeces.html" , methods=['GET','POST'])
+@app.route(webpage+"/curapeces.html" , methods=['GET','POST'])
 def curapeces():
 	import curapeces
 	curapeces_class=curapeces.curapeces()
@@ -654,12 +634,12 @@ def curapeces():
 			sickness = sickness0
 		else :
 			sickness = "/static/img/prediccionerror.jpg"	
-	return render_template('/curapeces.html',prediccion=sickness)#,file=file)
+	return render_template('www_of/curapeces.html',prediccion=sickness)#,file=file)
 
-#==================================================================================================== curapeces ====================================================================================================#
+	#==================================================================================================== curapeces ====================================================================================================#
 
 
-#====================================================================================================  web executing ====================================================================================================#
+	#====================================================================================================  web executing ====================================================================================================#
 
 if __name__=='__main__':
 	app.run(debug=True,host="0.0.0.0")

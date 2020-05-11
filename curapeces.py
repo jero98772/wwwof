@@ -28,12 +28,12 @@ class curapeces():
     K.clear_session()
     directorio="./static/img/datos_limpios"
 
-    pruebas = 2
-    alturadelaimagen =500
-    longituddelaimagen= 500
+    pruebas = 1
+    alturadelaimagen = 32
+    longituddelaimagen= 32
     numerodeimagenesamandar=4 
-    pasos=1000#numero de veces que se va aprosesar la informacion
-    validacon=333
+    pasos=400#numero de veces que se va aprosesar la informacion
+    validacon=100
     filtroprimeravez= 32
     filtrosegundavez= 64
     filtroterceravez= 32
