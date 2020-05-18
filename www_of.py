@@ -1,12 +1,11 @@
 import subprocess
 from flask import Flask, render_template, request, flash, redirect 
-try:
-	from flask_sqlalchemy import SQLAlchemy
+
+from flask_sqlalchemy import SQLAlchemy
 #from wtforms import  BooleanField, StringField, validators ,IntegerField
-	import psycopg2, psycopg2.extras
-	from psycopg2.extensions import AsIs
-except:	
-	subprocess.run("systemctl start postgresql.service", shell =True)
+import psycopg2, psycopg2.extras
+from psycopg2.extensions import AsIs
+
 #from flask_sqlalchemy import SQLAlchemy
 import time
 import numpy as np
@@ -26,21 +25,21 @@ from tensorflow.python.keras import backend as K
 from codes_python import ordenador
 #from flask_dropzone import Dropzone
 from codes_python import wwwof 
+import sqlite3
 #==================================================================================================== librararis ====================================================================================================#
 
-app_root=os.path.dirname(os.path.abspath(__file__))
 app=Flask(__name__)
 app.secret_key = "mysecretkey"
-
+"""
 POSTGRES = {
     'user': 'postgres',
-    'pw': '8_>370',
     'db': 'wwwofish',
     'host': 'localhost',
     'port': '5000',
 }
 
-app.config['SQLAlchemy_DATABASE_URI'] =  POSTGRES
+app.config['SQLAlchemy_DATABASE_URI'] =  POSTGRES"""
+app.config['SECRET_KEY']
 db=SQLAlchemy(app)
 def p(*args):
 	for i in args:
@@ -48,7 +47,6 @@ def p(*args):
 
 def selctimg(rows,imgdir,id):
 	img = ""
-
 	imgs =[]
 	count = 0
 	col = 0
@@ -56,9 +54,7 @@ def selctimg(rows,imgdir,id):
 		for i in rows:
 			while count <  len(os.listdir(imgdir)) and  i == imgdir+str(count):
 				img = os.path.join(imgdir+str(count)) 
-				#img = count
-				#img = str(imgdir+str(count))
-			if col == 42:
+			if col == len(rows):
 				p(col)
 				photoname = i
 				p(photoname)
@@ -68,9 +64,13 @@ def selctimg(rows,imgdir,id):
 		imgs.append(count)
 	return [img ,count,imgs,photoname]
 def shortcut():
-	POSTGRES = psycopg2.connect(database='wwwofish',user='postgres',password='8_>370', host='localhost')
-	db=POSTGRES.cursor()
-	
+	#try:
+	#	POSTGRES = psycopg2.connect(database='wwwofish',user='postgres',password='8_>370', host='localhost')
+	#except:
+	#	subprocess.run("systemctl start postgresql.service", shell =True)
+	#db=POSTGRES.cursor()
+	connection = sqlite3.connect('wwwofish')
+	db = connection.cursor()
 	db.execute(" SELECT * FROM wwwoftable4;")
 	return db
 def chose_predeiction(diases):
@@ -146,6 +146,21 @@ def calcuph():
 	return render_template("www_of/ph.html") 
 
 
+#================================================== howproyects ==================================================#
+howproyects = "/howproyects"
+@app.route(webpage+howproyects+"/howcalcupH.html")
+def howcalcuph():
+	return render_template("www_of"+howproyects+"/howcalcupH_js.html") 
+@app.route(webpage+howproyects+"/howdrawFISHTANK.html")
+def howdrawfishtank():
+	return render_template("www_of"+howproyects+"/howDrawfishtank.html") 
+@app.route(webpage+howproyects+"/howcurapeces.html")
+def howcurapeces():
+	return render_template("www_of"+howproyects+"/howcurapeces.html") 
+@app.route(webpage+howproyects+"/howfishdb.html")
+def howfishdb():
+	return render_template("www_of"+howproyects+"/howfishdb.html") 
+
 #================================================== caculators ==================================================#
 
 @app.route(webpage+"/fish_p5js.html")
@@ -160,10 +175,12 @@ def fish_p5js():
 
 @app.route(webpage+"/data_basecsv.html", methods=['GET','POST'])
 def data_basecsv():
+
 	imgepath = []
 	db = shortcut()
-	rows = db.fetchall() 
-	imgdir = "./static/img/saved_db_img/"
+	db.execute(" SELECT * FROM wwwoftable4;")
+	rows = db.fetchall()
+	imgdir = "./static/"+webpage+"/img/saved_db_img/"
 	if request.method == 'POST':
 #=================== name STRINGS ===================#
 		scientific_name = str(request.form["scientific_name"])
@@ -265,9 +282,9 @@ def data_basecsv():
 		photoname1 = str(photoname1).replace("' ('image/jpeg')>","")
 		photoname1 = str(photoname1).replace("' ('image/png')>","")
 		photoname1 = str(photoname1).replace("' ('image/jpg')>","")
+
 		#print("\n"*2,photoname1 ,"\n"*2)
 		photo.save(imgdir+photoname1)
-		photo = photoname1
 		photoname2 = str(len(os.listdir(imgdir)))
 		photoname = str(imgdir+photoname2)
 		photonameid = imgdir+photoname2 +scientific_name
@@ -279,7 +296,9 @@ def data_basecsv():
 			counter +=1
 		#photoimg = cv2.imread(photo)
 		#cv2.imwrite(imgdir+photoname,photoimg)
-
+		photo = photoname #this for return name in case to serarch
+		file = photo# this for return file
+		
 
 #=================== put in db ===================#
 		waterforce = recommended_filtering
@@ -306,16 +325,16 @@ def data_basecsv():
 
 
 		db.connection.commit()
-		#flash('you edit that')
-		#print(imgepath,2*"\n")
+		db.close()
+
 	return render_template("www_of/data_basecsv/data_basecsv.html", form = db, fishes=rows ,imgs =imgepath) 
 @app.route(webpage+"/data_basecsv/delete/<string:id>", methods = ['GET','POST'])
 def delete(id):
-	db=shortcut()
-	db.execute('DELETE FROM wwwoftable4 WHERE id = {0}'.format(id))
+	db = shortcut()
+	db.execute('DELETE  FROM wwwoftable4 WHERE id = {0};'.format(id))
 	db.connection.commit()
 	flash('you delete that')
-	return redirect("/data_basecsv.html")
+	return redirect(webpage+"/data_basecsv.html")
 
 
 
@@ -323,7 +342,7 @@ def delete(id):
 @app.route(webpage+'/data_basecsv/actualisar<string:id>', methods = ['GET','POST'])
 def update_fish(id):
 	db = shortcut()
-	imgdir = "./static/img/saved_db_img/"
+	imgdir = "./static"+webpage+"/img/saved_db_img/"
 	rows = db.fetchall() 
 	imgepath = []
 	if request.method == 'POST':
@@ -553,7 +572,7 @@ def update_fish(id):
 		flash(' Updated Successfully')
 		db.connection.commit()
 
-		return redirect('/data_basecsv.html')
+		return redirect(webpage+'/data_basecsv.html')
 
 
 @app.route(webpage+'/data_basecsv/<string:id>', methods = ['POST', 'GET'])
@@ -561,7 +580,7 @@ def get_fish(id):
 	#imgchange = ""
 	img = ""
 	count = 0
-	imgdir = "./static/img/saved_db_img/"
+	imgdir = "./static/www_of/img/saved_db_img/"
 	imgepath = []
 	db = shortcut()
 	db.connection.cursor()
@@ -586,7 +605,7 @@ def get_fish(id):
 	"""
 
 	db.close()
-	return render_template('www_of/data_basecsv/updatefish.html', fish = rows[0],strcounter = name,test=imgs)#, imgpath=imgchange)
+	return render_template(webpage+'/data_basecsv/updatefish.html', fish = rows[0],strcounter = name,test=imgs)#, imgpath=imgchange)
 
 #====================================================================================================  add fish db ====================================================================================================#
 
@@ -633,7 +652,7 @@ def curapeces():
 		if sickness0 == sickness2 :
 			sickness = sickness0
 		else :
-			sickness = "/static/img/prediccionerror.jpg"	
+			sickness = "/static/www_of/img/prediccionerror.jpg"	
 	return render_template('www_of/curapeces.html',prediccion=sickness)#,file=file)
 
 	#==================================================================================================== curapeces ====================================================================================================#

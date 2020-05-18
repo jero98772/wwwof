@@ -1,4 +1,4 @@
-{% extends  "base.html"%}
+{% extends  "www_of/base.html"%}
 {% block content %}
 {%macro render_field(field)%}
  <td> {{ field.label }} </td>
@@ -13,9 +13,9 @@
 
 	<tr>
 		<td>scientific name</td>
-		<td><input type="text" name="scientific_name" placeholder="scientific name" required></td>
+		<td><input type="text" name="scientific_name" placeholder="scientific name" ></td>
 		<td>common name</td>
-		<td><input type="text" name="common_name" placeholder="common name" required></td>
+		<td><input type="text" name="common_name" placeholder="common name" ></td>
 
 	</tr>
 	<tr>
@@ -243,7 +243,7 @@
 
 				<td colspan="2" rowspan="3">
 					{% set strcounter  = loop.index|string %}	
-					{%set imgpath = "./../static/img/saved_db_img/"+ strcounter  %}			
+					{%set imgpath = "./../static/www_of/img/saved_db_img/"+ strcounter  %}			
 					<img src="{{imgpath}}  " height="250" width="250" >
 			
 				</td>

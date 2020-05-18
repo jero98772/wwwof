@@ -1,4 +1,6 @@
-
+{%set webpage = "/www_of"%}
+{%set wwwof = "/www_of/"%}
+{%set howproyects = "/www_of/howproyects"%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,69 +10,58 @@
 	<title>Word Wide Web of Fish</title>
 </head>
 <body>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/barras.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='www_of/css/barras.css')}}">
 	<center>
 		<div id="header">
 			
 		<ul class="bar">
-			<li><a href="">main menu</a></li>
+			<li><a href="{{webpage}}">main menu</a></li>
 
-				<li><a href=""> Proyectos herramientas  </a>
+				<li><a href="{{howproyects}}">howProyects/how is made this proyects   </a>						
 					<ul>
-						<li><a href="calcupH.html">calcuPH</a> </li>
-						<li><a href="drawFISHTANK.html">drawFISHTANK</a></li>
-					</ul>
-				</li>
-				<li><a href="">AI Proyectos  </a>
-					<ul>
-						<li><a href="curapeces.html">curapeces</a></li>
-					</ul>
+						<li><a href="{{howproyects}}/howcalcupH.html">howcalcuph</a>	</li>
+						<li><a href="{{howproyects}}/howdrawFISHTANK.html">howdrawFISHTANK</a>	</li>
 
-				<li><a href="">hardware Proyectos  </a>
-					<ul>
-						<li><a href="divePC.html">divePC</a></li>
+						<li><a href="{{howproyects}}/howcurapeces.html">howcurapeces</a>	</li>
+						<li><a href="{{howproyects}}/howfishdb.html">howfishdb</a>	</li>
 
 					</ul>
 				</li>
-				<li><a href="">pequeños Proyectos  </a>
+				<li><a href="{{wwwof}}planeacion.html">planes y documentacion</a>
 					<ul>
-						<li><a href="calcupH.html">calcuPH</a> </li>
-						<li><a href="drawFISHTANK.html">drawFISHTANK</a></li>
+						<li><a href="{{wwwof}}planeacion.html">planeacion/planing</a>
+
+						<li><a href="{{wwwof}}informe_de_ensayos.html">informe_de_ensayos </a>
+						<li><a href="{{wwwof}}valores.html">valores </a>
+					</ul>
+				</li>
+				<li><a href=""> Proyects  </a>
+					<ul>
+						<li><a href="{{wwwof}}calcupH.html">calcuPH</a> </li>
+						<li><a href="{{wwwof}}drawFISHTANK.html">drawFISHTANK</a></li>
+						<li><a href="{{wwwof}}divePC.html">divePC</a></li>
+						<li><a href="{{wwwof}}curapeces.html">curapeces</a></li>
+						<li><a href="{{wwwof}}data_basecsv.html">data_basecsv</a></li>
+
 					<!--li><a href="bechmarck.html">bechmarck</a></li-->
-
+						<li><a href="{{wwwof}}" onclick="alert('you are now in wwwof')">WWWoF</a></li>
 					</ul>
 				</li>
-
-				<li><a href="planeacion.html">planes y documentacion</a>
+				<li><a href="">source  </a>
 					<ul>
-						<li><a href="planeacion.html">planeacion/planing</a>
-
-						<li><a href="informe_de_ensayos.html">informe_de_ensayos </a>
-						<li><a href="valores.html">valores </a>
-					</ul>
-				</li>
-				<li><a href="">todas las fuentes y codigo </a>
-					<ul>
-					<li><a href="calcupH.html">calcuPH</a> </li>
-					<li><a href="drawFISHTANK.html">drawFISHTANK</a></li>
-					<li><a href="data_basecsv.html">data_basecsv</a></li>
-					<li><a href="curapeces.html">curapeces</a></li>
+						<li><a href="https://github.com/jero98772/calcupH_js">calcuPH</a> </li>
+						<li><a href="https://github.com/jero98772/dibujo_acuario_p5js">drawFISHTANK</a></li>
+						<li><a href="http://wiki.unloquer.org/personas/jero98772/requeriminetos-para-semihacker/proyectos-sueltos/wwwof/divepc/start">divePC</a></li>
+						<li><a href="https://github.com/jero98772/curapeces">curapeces</a></li>
 					<!--li><a href="bechmarck.html">bechmarck</a></li-->
-					<li><a href="planeacion.html">planeacion/planing</a>
-					<li><a href="informe_de_ensayos.html">informe_de_ensayos</a></li>
-					<li><a href="divePC.html">divePC</a></li>
-					<li><a href="https://github.com/jero98772/calcupH_js">calcuPH</a></li>
-					<li><a href="https://github.com/jero98772/PHpythoncalcultator"> PHpythoncalcultator</a></li>
-					<li><a href="https://github.com/jero98772/drawFISHTANK">drawFISHTANK</a>
-					<li><a href="https://github.com/jero98772/curapeces">curapeces</a></li>
-					</li>
-					<li><a href="http://wiki.unloquer.org/personas/jero98772/requeriminetos-para-semihacker/proyectos-sueltos/wwwof/divepc/start">divePC</a></li>
-					<li><a href="https://github.com/jero98772/wwwofish">WWWOF</a></li>
+						<!--li><a href="https://github.com/jero98772/wwwofish">divePC</a></li-->
+						<li><a href="https://github.com/jero98772/wwwofish">WWWOF</a></li>
 					</ul>
 				</li>
-				<li><a href="">word wide web of fish es freesoftware</a>
+
+				<li><a href="">word wide web of fish is freesoftware</a>
 					<ul>
-						<li onclick="alert('arreglalos')"><a>tienes promblemas? </a> </li>
+						<li onclick="alert('fix')"><a>have problems? </a> </li>
 
 						<li onclick="alert('conviertelo como te gusta')"><a>ves algo que no te gusta?</a></li>
 
@@ -107,7 +98,7 @@
 <marquee>
 	<a href="https://github.com/jero98772"><img src="https://img.pngio.com/github-logo-icon-of-glyph-style-available-in-svg-png-eps-ai-github-icon-png-256_256.png" height="100" width="100"></a>
 	<a href="mailto:curapeces@gmail.com">
-	<img src="{{ url_for('static', filename='img/mail.png')}}" height="100" width="100">
+	<img src="{{ url_for('static', filename='www_of/img/mail.png')}}" height="100" width="100">
 	</a>
 	<a href="donacionbtc.html">
 	<img src="https://bitcoin.org/img/icons/opengraph.png?1584741964" height="100" width="100">
