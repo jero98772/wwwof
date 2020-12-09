@@ -6,3 +6,6 @@ https://www.youtube.com/watch?v=WsMlSTcJ_bk
 image datasets
 https://drive.google.com/drive/folders/1VAtgS7fqS8MqXprYLcX69QLdEWNu8mdv?usp=sharing
 # you can inlcuide in your web change the variable webpage
+### contributes with donations
+	
+	- Bitcoin: bc1qf3eh6ssgzw2t3qyjk2gzwuskq4ctfk8375fg3r
