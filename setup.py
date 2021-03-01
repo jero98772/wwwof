@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name='wwwof',
-    version='2.7.0',
+    version='3.0.0',
     license='GPLv3',
     author_email='jero98772@protonmail.com',
     author='jero98772',

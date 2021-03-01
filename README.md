@@ -32,7 +32,17 @@ https://drive.google.com/drive/folders/1VAtgS7fqS8MqXprYLcX69QLdEWNu8mdv?usp=sha
 ### Curapeces
 [here](https://jero98772.pythonanywhere.com/wwwof/curapeces.html),is not working is very heavy for host but have strong AI , some times is working with "hack" for run in my machine is proyect for identify fish diases [code](https://github.com/jero98772/curapeces)
 ![curapeces](http://wiki.unloquer.org/_media/personas/jero98772/curapeces.png)
-# you can inlcuide in your web change the variable webpage
+# contributes
+### you can inlcuide in your web change the variable webpage
+### add you proyect about fishes to WwwoF 
+### share project ideas
 ### contributes with donations
 	
 	- Bitcoin: bc1qf3eh6ssgzw2t3qyjk2gzwuskq4ctfk8375fg3r
+
+# contact us we can help you
+## email 
+    curapeces at gmail dot com  
+## irc
+     #wwwof in  irc.freenode.net
+(kiwiirc)[https://kiwiirc.com/nextclient/irc.freenode.net/#wwwof ]
