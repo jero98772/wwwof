@@ -45,4 +45,4 @@ https://drive.google.com/drive/folders/1VAtgS7fqS8MqXprYLcX69QLdEWNu8mdv?usp=sha
     curapeces at gmail dot com  
 ## irc
      #wwwof in  irc.freenode.net
-(kiwiirc)[https://kiwiirc.com/nextclient/irc.freenode.net/#wwwof ]
+[kiwiirc](https://kiwiirc.com/nextclient/irc.freenode.net/#wwwof)
